@@ -1,5 +1,6 @@
 import json
 import csv
+import os
 
 # Função para ler um arquivo JSON e retornar os dados
 def leitura_json(path_json):
@@ -95,14 +96,15 @@ def salvando_dados(dados, path):
     """
     Salva uma lista de listas (tabela) em um arquivo CSV.
     """
-    with open(path, "w") as file:
+    with open(path, "w", newline='') as file:
         writer = csv.writer(file)
         writer.writerows(dados)
 
 
-# Caminhos dos arquivos JSON e CSV
-path_json = "Pipeline/Documentos/Setores/unprocessed-data/files-comp-I.json"
-path_csv = "Pipeline/Documentos/Setores/unprocessed-data/files-comp-II.csv"
+# Caminhos dos arquivos JSON e CSV (corrigidos com base na localização do script)
+base_dir = os.path.dirname(os.path.abspath(__file__))  # Diretório base onde o script está
+path_json = os.path.join(base_dir, "../unprocessed-data/files-comp-I.json")
+path_csv = os.path.join(base_dir, "../unprocessed-data/files-comp-II.csv")
 
 # Mapeamento das chaves para renomeação
 key_mapping = {
@@ -141,8 +143,8 @@ print(f"Tamanho dos dados combinados: {tamanho_dados_merge}")
 # Transformando os dados combinados em tabela
 dados_merge_tabela = transformando_dados_tabela(dados_merge, nome_colunas_merge)
 
-# Caminho para salvar os dados combinados
-path_dados_combinados = "Pipeline/Documentos/Setores/processed-data/combined-data.csv"
+# Caminho para salvar os dados combinados (corrigido)
+path_dados_combinados = os.path.join(base_dir, "../processed-data/combined-data.csv")
 
 # Salvando os dados combinados no arquivo CSV
 salvando_dados(dados_merge_tabela, path_dados_combinados)
