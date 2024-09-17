@@ -3,62 +3,106 @@ import csv
 
 # Função para ler um arquivo JSON e retornar os dados
 def leitura_json(path_json):
-    dados_json = []  # Inicializa uma lista para armazenar os dados
-    with open(path_json, "r") as file:  # Abre o arquivo JSON para leitura
-        dados_json = json.load(file)  # Carrega os dados do JSON no formato de um dicionário/lista
-    return dados_json  # Retorna os dados lidos
+    """
+    Lê os dados de um arquivo JSON e retorna como uma lista/dicionário.
+    """
+    with open(path_json, "r") as file:
+        return json.load(file)  # Carrega e retorna os dados do arquivo JSON
+
 
 # Função para ler um arquivo CSV e retornar os dados
 def leitura_csv(path_csv):
-    dados_csv = []  # Inicializa uma lista para armazenar os dados
-    with open(path_csv, "r") as file:  # Abre o arquivo CSV para leitura
-        spamreader = csv.DictReader(file, delimiter=",")  # Lê o CSV como dicionário (cada linha é um dicionário)
-        for row in spamreader:  # Itera por cada linha do CSV
+    """
+    Lê os dados de um arquivo CSV e retorna como uma lista de dicionários.
+    """
+    dados_csv = []
+    with open(path_csv, "r") as file:
+        reader = csv.DictReader(file, delimiter=",")  # Lê o CSV como dicionário
+        for row in reader:
             dados_csv.append(row)  # Adiciona cada linha à lista
-    return dados_csv  # Retorna os dados lidos
+    return dados_csv
+
 
 # Função que decide qual tipo de arquivo ler (JSON ou CSV) baseado na extensão informada
 def leitura_dados(path, tipo_arquivo):
-    dados = []  # Inicializa uma lista para armazenar os dados
-    if tipo_arquivo == "csv":  # Se o tipo for CSV
-        dados = leitura_csv(path)  # Chama a função para ler CSV
-    elif tipo_arquivo == "json":  # Se o tipo for JSON
-        dados = leitura_json(path)  # Chama a função para ler JSON
-    return dados  # Retorna os dados lidos
+    """
+    Decide qual tipo de arquivo ler, JSON ou CSV, com base na extensão do arquivo.
+    """
+    if tipo_arquivo == "csv":
+        return leitura_csv(path)
+    elif tipo_arquivo == "json":
+        return leitura_json(path)
+
 
 # Função para obter os nomes das colunas dos dados
 def get_columns(dados):
-    if dados:  # Verifica se a lista não está vazia
-        return list(dados[0].keys())
+    """
+    Retorna uma lista com os nomes das colunas (chaves) do último item dos dados.
+    """
+    if dados:
+        return list(dados[-1].keys())  # Pega as chaves do último item da lista
     return []
+
 
 # Função para obter o tamanho dos dados
 def size_data(dados):
+    """
+    Retorna o número de itens (linhas) nos dados.
+    """
     return len(dados)
 
+
+# Função para combinar (fazer join) de duas listas de dados
 def join(dadosI, dadosII):
-    combined_list=[]
-    combined_list.extend(dadosI)
-    combined_list.extend(dadosII)
-    return combined_list
+    """
+    Combina (faz o join) de duas listas de dados.
+    """
+    return dadosI + dadosII  # Une as duas listas
+
+
+# Função para transformar os dados em formato de tabela
+def transformando_dados_tabela(dados, nomes_colunas):
+    """
+    Converte uma lista de dicionários em uma tabela (lista de listas),
+    com a primeira linha contendo os nomes das colunas.
+    """
+    dados_combinados_tabela = [nomes_colunas]  # Adiciona cabeçalhos (nomes das colunas)
+
+    for row in dados:
+        linha = [row.get(coluna, "Indisponível") for coluna in nomes_colunas]  # Preenche a linha
+        dados_combinados_tabela.append(linha)
+
+    return dados_combinados_tabela
+
+
+# Função para renomear as colunas com base em um dicionário de mapeamento
+def renaming_columns(dados, key_mapping):
+    """
+    Renomeia as colunas de um dicionário com base em um mapeamento de chaves.
+    """
+    new_dados = []
+    for old_dict in dados:
+        dict_temp = {}
+        for old_key, value in old_dict.items():
+            new_key = key_mapping.get(old_key, old_key)  # Renomeia ou mantém a chave
+            dict_temp[new_key] = value
+        new_dados.append(dict_temp)
+    return new_dados
+
+
+# Função para salvar os dados combinados em um arquivo CSV
+def salvando_dados(dados, path):
+    """
+    Salva uma lista de listas (tabela) em um arquivo CSV.
+    """
+    with open(path, "w") as file:
+        writer = csv.writer(file)
+        writer.writerows(dados)
+
 
 # Caminhos dos arquivos JSON e CSV
 path_json = "Pipeline/Documentos/Setores/unprocessed-data/files-comp-I.json"
 path_csv = "Pipeline/Documentos/Setores/unprocessed-data/files-comp-II.csv"
-
-# Lê o arquivo JSON e imprime o primeiro item da lista
-dados_json = leitura_dados(path_json, "json")
-nome_colunas_json = get_columns(dados_json)
-tamanho_dados_json = size_data(dados_json)
-print(f"Nome colunas dados JSON: {nome_colunas_json}")
-print(f"Tamanho dos dados JSON: {tamanho_dados_json}")
-
-# Lê o arquivo CSV e imprime o primeiro item da lista
-dados_csv = leitura_dados(path_csv, "csv")
-nome_colunas_csv = get_columns(dados_csv)
-tamanho_dados_csv = size_data(dados_csv)
-print(f"Nome colunas dados CSV: {nome_colunas_csv}")
-print(f"Tamanho dos dados CSV: {tamanho_dados_csv}")
 
 # Mapeamento das chaves para renomeação
 key_mapping = {
@@ -70,31 +114,36 @@ key_mapping = {
     "Data da Venda": "Data da Venda"
 }
 
-# Função para renomear as colunas com base no mapeamento
-def renaming_columns(dados, key_mapping):
-    new_dados_csv = []
-    for old_dict in dados:
-        dict_temp = {}
-        for old_key, value in old_dict.items():
-            # Verifica se a chave antiga está no mapeamento
-            if old_key in key_mapping:
-                new_key = key_mapping[old_key]
-                dict_temp[new_key] = value
-            else:
-                # Se a chave antiga não estiver no mapeamento, mantém a chave original
-                dict_temp[old_key] = value
-        new_dados_csv.append(dict_temp)
-    
-    return new_dados_csv
+# Lendo dados dos arquivos JSON e CSV
+dados_json = leitura_dados(path_json, "json")
+dados_csv = leitura_dados(path_csv, "csv")
 
-# Renomeia as colunas dos dados CSV
+# Obtendo informações dos dados JSON
+nome_colunas_json = get_columns(dados_json)
+tamanho_dados_json = size_data(dados_json)
+print(f"Nome colunas dados JSON: {nome_colunas_json}")
+print(f"Tamanho dos dados JSON: {tamanho_dados_json}")
+
+# Renomeando colunas dos dados CSV e obtendo informações
 dados_csv = renaming_columns(dados_csv, key_mapping)
 nome_colunas_csv = get_columns(dados_csv)
+tamanho_dados_csv = size_data(dados_csv)
 print(f"Nome colunas dados CSV após renomeação: {nome_colunas_csv}")
+print(f"Tamanho dos dados CSV: {tamanho_dados_csv}")
 
-dados_merge=join(dados_json, dados_csv)
-nome_colunas_merge=get_columns(dados_merge)
-tamanho_dados_merge=size_data(dados_merge)
+# Unindo (join) os dados JSON e CSV
+dados_merge = join(dados_json, dados_csv)
+nome_colunas_merge = get_columns(dados_merge)
+tamanho_dados_merge = size_data(dados_merge)
+print(f"Nome colunas dados combinados: {nome_colunas_merge}")
+print(f"Tamanho dos dados combinados: {tamanho_dados_merge}")
 
-print(nome_colunas_merge)
-print(tamanho_dados_merge)
+# Transformando os dados combinados em tabela
+dados_merge_tabela = transformando_dados_tabela(dados_merge, nome_colunas_merge)
+
+# Caminho para salvar os dados combinados
+path_dados_combinados = "Pipeline/Documentos/Setores/processed-data/combined-data.csv"
+
+# Salvando os dados combinados no arquivo CSV
+salvando_dados(dados_merge_tabela, path_dados_combinados)
+print(f"Dados combinados salvos em: {path_dados_combinados}")
