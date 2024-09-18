@@ -38,13 +38,13 @@ from data_handling import Dados
 
 
 # Função para obter os nomes das colunas dos dados
-def get_columns(dados):
-    """
-    Retorna uma lista com os nomes das colunas (chaves) do último item dos dados.
-    """
-    if dados:
-        return list(dados[-1].keys())  # Pega as chaves do último item da lista
-    return []
+# def get_columns(dados):
+#     """
+#     Retorna uma lista com os nomes das colunas (chaves) do último item dos dados.
+#     """
+#     if dados:
+#         return list(dados[-1].keys())  # Pega as chaves do último item da lista
+#     return []
 
 
 # Função para obter o tamanho dos dados
@@ -79,18 +79,18 @@ def transformando_dados_tabela(dados, nomes_colunas):
 
 
 # Função para renomear as colunas com base em um dicionário de mapeamento
-def renaming_columns(dados, key_mapping):
-    """
-    Renomeia as colunas de um dicionário com base em um mapeamento de chaves.
-    """
-    new_dados = []
-    for old_dict in dados:
-        dict_temp = {}
-        for old_key, value in old_dict.items():
-            new_key = key_mapping.get(old_key, old_key)  # Renomeia ou mantém a chave
-            dict_temp[new_key] = value
-        new_dados.append(dict_temp)
-    return new_dados
+# def renaming_columns(dados, key_mapping):
+#     """
+#     Renomeia as colunas de um dicionário com base em um mapeamento de chaves.
+#     """
+#     new_dados = []
+#     for old_dict in dados:
+#         dict_temp = {}
+#         for old_key, value in old_dict.items():
+#             new_key = key_mapping.get(old_key, old_key)  # Renomeia ou mantém a chave
+#             dict_temp[new_key] = value
+#         new_dados.append(dict_temp)
+#     return new_dados
 
 
 # Função para salvar os dados combinados em um arquivo CSV
@@ -109,20 +109,24 @@ path_json = os.path.join(base_dir, "../unprocessed-data/files-comp-I.json")
 path_csv = os.path.join(base_dir, "../unprocessed-data/files-comp-II.csv")
 
 dados_empresaI=Dados(path_json, "json")
-print(dados_empresaI.dados)
+print(dados_empresaI.nome_colunas)
 
 dados_empresaII=Dados(path_csv, "csv")
-print(dados_empresaII.dados)
+print(dados_empresaII.nome_colunas)
 
 # # Mapeamento das chaves para renomeação
-# key_mapping = {
-#     "Nome do Item": "Nome do Produto",
-#     "Classificação do Produto": "Categoria do Produto",
-#     "Valor em Reais (R$)": "Preço do Produto (R$)",
-#     "Quantidade em Estoque": "Quantidade em Estoque",
-#     "Nome da Loja": "Filial",
-#     "Data da Venda": "Data da Venda"
-# }
+key_mapping = {
+    "Nome do Item": "Nome do Produto",
+    "Classificação do Produto": "Categoria do Produto",
+    "Valor em Reais (R$)": "Preço do Produto (R$)",
+    "Quantidade em Estoque": "Quantidade em Estoque",
+    "Nome da Loja": "Filial",
+    "Data da Venda": "Data da Venda"
+}
+
+dados_empresaII.renaming_columns(key_mapping)
+print(dados_empresaII.nome_colunas)
+
 
 # # Lendo dados dos arquivos JSON e CSV
 # dados_json = leitura_dados(path_json, "json")
