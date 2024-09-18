@@ -2,6 +2,8 @@ import json
 import csv
 import os
 
+from data_handling import Dados
+
 # Função para ler um arquivo JSON e retornar os dados
 def leitura_json(path_json):
     """
@@ -106,46 +108,49 @@ base_dir = os.path.dirname(os.path.abspath(__file__))  # Diretório base onde o 
 path_json = os.path.join(base_dir, "../unprocessed-data/files-comp-I.json")
 path_csv = os.path.join(base_dir, "../unprocessed-data/files-comp-II.csv")
 
-# Mapeamento das chaves para renomeação
-key_mapping = {
-    "Nome do Item": "Nome do Produto",
-    "Classificação do Produto": "Categoria do Produto",
-    "Valor em Reais (R$)": "Preço do Produto (R$)",
-    "Quantidade em Estoque": "Quantidade em Estoque",
-    "Nome da Loja": "Filial",
-    "Data da Venda": "Data da Venda"
-}
+dados_empresaI=Dados(path_json, "json")
+print(dados_empresaI.path)
 
-# Lendo dados dos arquivos JSON e CSV
-dados_json = leitura_dados(path_json, "json")
-dados_csv = leitura_dados(path_csv, "csv")
+# # Mapeamento das chaves para renomeação
+# key_mapping = {
+#     "Nome do Item": "Nome do Produto",
+#     "Classificação do Produto": "Categoria do Produto",
+#     "Valor em Reais (R$)": "Preço do Produto (R$)",
+#     "Quantidade em Estoque": "Quantidade em Estoque",
+#     "Nome da Loja": "Filial",
+#     "Data da Venda": "Data da Venda"
+# }
 
-# Obtendo informações dos dados JSON
-nome_colunas_json = get_columns(dados_json)
-tamanho_dados_json = size_data(dados_json)
-print(f"Nome colunas dados JSON: {nome_colunas_json}")
-print(f"Tamanho dos dados JSON: {tamanho_dados_json}")
+# # Lendo dados dos arquivos JSON e CSV
+# dados_json = leitura_dados(path_json, "json")
+# dados_csv = leitura_dados(path_csv, "csv")
 
-# Renomeando colunas dos dados CSV e obtendo informações
-dados_csv = renaming_columns(dados_csv, key_mapping)
-nome_colunas_csv = get_columns(dados_csv)
-tamanho_dados_csv = size_data(dados_csv)
-print(f"Nome colunas dados CSV após renomeação: {nome_colunas_csv}")
-print(f"Tamanho dos dados CSV: {tamanho_dados_csv}")
+# # Obtendo informações dos dados JSON
+# nome_colunas_json = get_columns(dados_json)
+# tamanho_dados_json = size_data(dados_json)
+# print(f"Nome colunas dados JSON: {nome_colunas_json}")
+# print(f"Tamanho dos dados JSON: {tamanho_dados_json}")
 
-# Unindo (join) os dados JSON e CSV
-dados_merge = join(dados_json, dados_csv)
-nome_colunas_merge = get_columns(dados_merge)
-tamanho_dados_merge = size_data(dados_merge)
-print(f"Nome colunas dados combinados: {nome_colunas_merge}")
-print(f"Tamanho dos dados combinados: {tamanho_dados_merge}")
+# # Renomeando colunas dos dados CSV e obtendo informações
+# dados_csv = renaming_columns(dados_csv, key_mapping)
+# nome_colunas_csv = get_columns(dados_csv)
+# tamanho_dados_csv = size_data(dados_csv)
+# print(f"Nome colunas dados CSV após renomeação: {nome_colunas_csv}")
+# print(f"Tamanho dos dados CSV: {tamanho_dados_csv}")
 
-# Transformando os dados combinados em tabela
-dados_merge_tabela = transformando_dados_tabela(dados_merge, nome_colunas_merge)
+# # Unindo (join) os dados JSON e CSV
+# dados_merge = join(dados_json, dados_csv)
+# nome_colunas_merge = get_columns(dados_merge)
+# tamanho_dados_merge = size_data(dados_merge)
+# print(f"Nome colunas dados combinados: {nome_colunas_merge}")
+# print(f"Tamanho dos dados combinados: {tamanho_dados_merge}")
 
-# Caminho para salvar os dados combinados (corrigido)
-path_dados_combinados = os.path.join(base_dir, "../processed-data/combined-data.csv")
+# # Transformando os dados combinados em tabela
+# dados_merge_tabela = transformando_dados_tabela(dados_merge, nome_colunas_merge)
 
-# Salvando os dados combinados no arquivo CSV
-salvando_dados(dados_merge_tabela, path_dados_combinados)
-print(f"Dados combinados salvos em: {path_dados_combinados}")
+# # Caminho para salvar os dados combinados (corrigido)
+# path_dados_combinados = os.path.join(base_dir, "../processed-data/combined-data.csv")
+
+# # Salvando os dados combinados no arquivo CSV
+# salvando_dados(dados_merge_tabela, path_dados_combinados)
+# print(f"Dados combinados salvos em: {path_dados_combinados}")
