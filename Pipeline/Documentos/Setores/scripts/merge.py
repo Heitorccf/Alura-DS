@@ -4,37 +4,37 @@ import os
 
 from data_handling import Dados
 
-# Função para ler um arquivo JSON e retornar os dados
-def leitura_json(path_json):
-    """
-    Lê os dados de um arquivo JSON e retorna como uma lista/dicionário.
-    """
-    with open(path_json, "r") as file:
-        return json.load(file)  # Carrega e retorna os dados do arquivo JSON
+# # Função para ler um arquivo JSON e retornar os dados
+# def leitura_json(path_json):
+#     """
+#     Lê os dados de um arquivo JSON e retorna como uma lista/dicionário.
+#     """
+#     with open(path_json, "r") as file:
+#         return json.load(file)  # Carrega e retorna os dados do arquivo JSON
 
 
-# Função para ler um arquivo CSV e retornar os dados
-def leitura_csv(path_csv):
-    """
-    Lê os dados de um arquivo CSV e retorna como uma lista de dicionários.
-    """
-    dados_csv = []
-    with open(path_csv, "r") as file:
-        reader = csv.DictReader(file, delimiter=",")  # Lê o CSV como dicionário
-        for row in reader:
-            dados_csv.append(row)  # Adiciona cada linha à lista
-    return dados_csv
+# # Função para ler um arquivo CSV e retornar os dados
+# def leitura_csv(path_csv):
+#     """
+#     Lê os dados de um arquivo CSV e retorna como uma lista de dicionários.
+#     """
+#     dados_csv = []
+#     with open(path_csv, "r") as file:
+#         reader = csv.DictReader(file, delimiter=",")  # Lê o CSV como dicionário
+#         for row in reader:
+#             dados_csv.append(row)  # Adiciona cada linha à lista
+#     return dados_csv
 
 
-# Função que decide qual tipo de arquivo ler (JSON ou CSV) baseado na extensão informada
-def leitura_dados(path, tipo_arquivo):
-    """
-    Decide qual tipo de arquivo ler, JSON ou CSV, com base na extensão do arquivo.
-    """
-    if tipo_arquivo == "csv":
-        return leitura_csv(path)
-    elif tipo_arquivo == "json":
-        return leitura_json(path)
+# # Função que decide qual tipo de arquivo ler (JSON ou CSV) baseado na extensão informada
+# def leitura_dados(path, tipo_arquivo):
+#     """
+#     Decide qual tipo de arquivo ler, JSON ou CSV, com base na extensão do arquivo.
+#     """
+#     if tipo_arquivo == "csv":
+#         return leitura_csv(path)
+#     elif tipo_arquivo == "json":
+#         return leitura_json(path)
 
 
 # Função para obter os nomes das colunas dos dados
@@ -109,7 +109,10 @@ path_json = os.path.join(base_dir, "../unprocessed-data/files-comp-I.json")
 path_csv = os.path.join(base_dir, "../unprocessed-data/files-comp-II.csv")
 
 dados_empresaI=Dados(path_json, "json")
-print(dados_empresaI.path)
+print(dados_empresaI.dados)
+
+dados_empresaII=Dados(path_csv, "csv")
+print(dados_empresaII.dados)
 
 # # Mapeamento das chaves para renomeação
 # key_mapping = {
