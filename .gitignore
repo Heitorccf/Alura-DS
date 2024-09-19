@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 
 # Ignorar ambientes virtuais
+.venv/
 venv/
 env/
 .env
@@ -22,5 +23,5 @@ env/
 *.tmp
 
 # Ignorar arquivos gerados por IDEs
-*.idea/
-*.vscode/
+.idea/
+.vscode/
