@@ -48,19 +48,19 @@ from data_handling import Dados
 
 
 # Função para obter o tamanho dos dados
-def size_data(dados):
-    """
-    Retorna o número de itens (linhas) nos dados.
-    """
-    return len(dados)
+# def size_data(dados):
+#     """
+#     Retorna o número de itens (linhas) nos dados.
+#     """
+#     return len(dados)
 
 
 # Função para combinar (fazer join) de duas listas de dados
-def join(dadosI, dadosII):
-    """
-    Combina (faz o join) de duas listas de dados.
-    """
-    return dadosI + dadosII  # Une as duas listas
+# def join(dadosI, dadosII):
+#     """
+#     Combina (faz o join) de duas listas de dados.
+#     """
+#     return dadosI + dadosII  # Une as duas listas
 
 
 # Função para transformar os dados em formato de tabela
@@ -110,9 +110,11 @@ path_csv = os.path.join(base_dir, "../unprocessed-data/files-comp-II.csv")
 
 dados_empresaI=Dados(path_json, "json")
 print(dados_empresaI.nome_colunas)
+print(dados_empresaI.qtd_linhas)
 
 dados_empresaII=Dados(path_csv, "csv")
 print(dados_empresaII.nome_colunas)
+print(dados_empresaII.qtd_linhas)
 
 # # Mapeamento das chaves para renomeação
 key_mapping = {
@@ -126,6 +128,11 @@ key_mapping = {
 
 dados_empresaII.renaming_columns(key_mapping)
 print(dados_empresaII.nome_colunas)
+
+dados_merge = dados_empresaI.join(dados_empresaII)
+print("Dados Combinados:")
+print(dados_merge.nome_colunas)
+print(dados_merge.qtd_linhas)
 
 
 # # Lendo dados dos arquivos JSON e CSV
