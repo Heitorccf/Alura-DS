@@ -1,27 +1,33 @@
-# Ignorar arquivos de bytecode
+# Ignorar arquivos de bytecode gerados pelo Python durante a execução
 __pycache__/
-*.pyc
-*.pyo
+*.pyc       # Arquivos compilados do Python (bytecode)
+*.pyo       # Arquivos otimizados de bytecode
 
-# Ignorar ambientes virtuais
-.venv/
-venv/
-env/
-.env
+# Ignorar diretórios de ambientes virtuais usados para isolar dependências
+.venv/      # Ambiente virtual padrão
+venv/       # Alternativa comum de nome para ambientes virtuais
+env/        # Outro nome usado para ambientes virtuais
+.env        # Pode ser usado para armazenar variáveis de ambiente
 
-# Ignorar arquivos de log
-*.log
+# Ignorar arquivos de log que podem ser gerados pela aplicação durante a execução
+*.log       # Arquivos de log
 
-# Ignorar arquivos de banco de dados
-*.db
+# Ignorar arquivos de banco de dados locais que podem ser gerados para armazenamento temporário
+*.db        # Arquivos de banco de dados (SQLite, por exemplo)
 
-# Ignorar arquivos de configuração de Jupyter Notebook
-.ipynb_checkpoints/
+# Ignorar checkpoints do Jupyter Notebook que salvam versões intermediárias dos notebooks
+.ipynb_checkpoints/  # Checkpoints do Jupyter Notebook
 
-# Ignorar arquivos temporários do sistema
-*.swp
-*.tmp
+# Ignorar arquivos temporários do sistema, geralmente gerados por editores de texto
+*.swp       # Arquivos temporários do Vim
+*.tmp       # Arquivos temporários gerais
 
-# Ignorar arquivos gerados por IDEs
-.idea/
-.vscode/
+# Ignorar arquivos e diretórios gerados por IDEs, que contêm configurações específicas do ambiente
+.idea/      # Configurações do IntelliJ, PyCharm e WebStorm (JetBrains)
+.vscode/    # Configurações do Visual Studio Code
+
+# Ignorar backups temporários criados por editores de texto (ex: arquivos terminados em ~)
+*~
+
+# Ignorar novamente checkpoints do Jupyter Notebook por precaução
+*.ipynb_checkpoints
